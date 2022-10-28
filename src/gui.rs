@@ -25,8 +25,8 @@ const PLOT_NUM_PTS: usize = 2048;
 pub enum Message {
     Start(egui::Context),
     Update {
-        units: Arc<Vec<DcsWorldUnit>>,
-        ballistics: Arc<Vec<DcsWorldObject>>,
+        units: Vec<DcsWorldUnit>,
+        ballistics: Vec<DcsWorldObject>,
         game_time: f64,
     },
 }

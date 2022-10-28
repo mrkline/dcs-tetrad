@@ -5,7 +5,6 @@ use std::io::Write;
 use std::path::Path;
 use std::sync::{
     mpsc::{Receiver, Sender},
-    Arc,
 };
 use std::thread::JoinHandle;
 use std::{fs::File, os::windows::io::FromRawHandle};
@@ -259,16 +258,16 @@ pub fn on_frame_begin(lua: &Lua, _: ()) -> LuaResult<()> {
     let t = dcs::get_model_time(lua);
     send_worker_message(worker::Message::NewFrame(t));
 
-    let ballistics = Arc::new(dcs::get_ballistics_objects(lua));
-    send_worker_message(worker::Message::BallisticsStateUpdate(Arc::clone(
-        &ballistics,
-    )));
+    let ballistics = dcs::get_ballistics_objects(lua);
+    send_worker_message(worker::Message::BallisticsStateUpdate(
+        ballistics.clone(),
+    ));
 
-    let units = Arc::new(dcs::get_unit_objects(lua));
-    send_worker_message(worker::Message::UnitStateUpdate(Arc::clone(&units)));
+    let units = dcs::get_unit_objects(lua);
+    send_worker_message(worker::Message::UnitStateUpdate(units.clone()));
     send_gui_message(gui::Message::Update {
-        units: Arc::clone(&units),
-        ballistics: Arc::clone(&ballistics),
+        units,
+        ballistics: ballistics,
         game_time: t,
     });
     Ok(())

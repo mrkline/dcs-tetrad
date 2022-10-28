@@ -4,13 +4,13 @@ use crate::dcs::DcsWorldObject;
 use crate::dcs::DcsWorldUnit;
 use std::fs::File;
 use std::path::Path;
-use std::sync::{mpsc::Receiver, Arc};
+use std::sync::{mpsc::Receiver};
 use zstd::stream::write::Encoder as ZstdEncoder;
 
 pub enum Message {
     NewFrame(f64),
-    BallisticsStateUpdate(Arc<Vec<DcsWorldObject>>),
-    UnitStateUpdate(Arc<Vec<DcsWorldUnit>>),
+    BallisticsStateUpdate(Vec<DcsWorldObject>),
+    UnitStateUpdate(Vec<DcsWorldUnit>),
     Stop,
 }
 
